@@ -28,6 +28,8 @@ services:
         while ! nc -z postgres 5432; do sleep 5; done;
         npm start
       "
+    volumes:
+      - "./${ILP_PLUGIN_MODULE}:/usr/src/app/node_modules/${ILP_PLUGIN_MODULE}"
     networks:
       kit:
         aliases:
@@ -53,7 +55,9 @@ services:
       LEDGER_ILP_PREFIX: "test.dev.kit1."
       LEDGER_RECOMMENDED_CONNECTORS: "connector"
       CONNECTOR_ENABLE: "true"
-      CONNECTOR_LEDGERS: '{"test.dev.kit1.":{"currency":"USD","plugin":"ilp-plugin-bells","options":{"account":"http://ilp-kit1:3010/ledger/accounts/connector","username":"connector","password":"password"}}}'
+      CONNECTOR_LEDGERS: '{"test.dev.kit1.":{"currency":"USD","plugin":"ilp-plugin-bells","options":{"account":"http://ilp-kit1:3010/ledger/accounts/connector","username":"connector","password":"password"}},"${ILP_PLUGIN_PREFIX}":{"currency":"USD","plugin":"${ILP_PLUGIN_MODULE}","store":${ILP_PLUGIN_STORE:-false},"options":${ILP_PLUGIN_CONFIG_1}}}'
+      CONNECTOR_ROUTES: '[{"targetPrefix":"test.dev.kit2.","connectorLedger":"${ILP_PLUGIN_PREFIX}","connectorAccount":"${ILP_PLUGIN_ACCOUNT_2}"}]'
+      CONNECTOR_ROUTE_BROADCAST_ENABLED: "false"
       API_REGISTRATION: "true"
       LEDGER_AMOUNT_SCALE: "9"
       LEDGER_AMOUNT_PRECISION: "19"
@@ -70,6 +74,8 @@ services:
         while ! nc -z postgres 5432; do sleep 5; done;
         npm start
       "
+    volumes:
+      - "./${ILP_PLUGIN_MODULE}:/usr/src/app/node_modules/${ILP_PLUGIN_MODULE}"
     networks:
       kit:
         aliases:
@@ -95,7 +101,8 @@ services:
       LEDGER_ILP_PREFIX: "test.dev.kit2."
       LEDGER_RECOMMENDED_CONNECTORS: "connector"
       CONNECTOR_ENABLE: "true"
-      CONNECTOR_LEDGERS: '{"test.dev.kit2.":{"currency":"USD","plugin":"ilp-plugin-bells","options":{"account":"http://ilp-kit2:4010/ledger/accounts/connector","username":"connector","password":"password"}}}'
+      CONNECTOR_LEDGERS: '{"test.dev.kit2.":{"currency":"USD","plugin":"ilp-plugin-bells","options":{"account":"http://ilp-kit2:4010/ledger/accounts/connector","username":"connector","password":"password"}},"${ILP_PLUGIN_PREFIX}":{"currency":"USD","plugin":"${ILP_PLUGIN_MODULE}","store":${ILP_PLUGIN_STORE:-false},"options":${ILP_PLUGIN_CONFIG_2}}}'
+      CONNECTOR_ROUTES: '[{"targetPrefix":"test.dev.kit1.","connectorLedger":"${ILP_PLUGIN_PREFIX}","connectorAccount":"${ILP_PLUGIN_ACCOUNT_1}"}]'
       API_REGISTRATION: "true"
       LEDGER_AMOUNT_SCALE: "9"
       LEDGER_AMOUNT_PRECISION: "19"
