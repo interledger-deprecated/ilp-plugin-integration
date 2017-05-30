@@ -1,0 +1,103 @@
+# docker compose for an ILP Kit
+version: "2.1"
+networks:
+  kit:
+services:
+
+  postgres-db:
+    container_name: "postgres-db"
+    build:
+      context: "./src"
+      dockerfile: "PostgresDockerFile"
+    environment:
+      PGDATA: "/var/lib/postgresql/data"
+      POSTGRES_USER: "admin"
+      POSTGRES_PASSWORD: "password"
+    networks:
+      kit:
+        aliases:
+          - "postgres"
+
+  ilp-kit-1:
+    container_name: "ilp-kit-1"
+    build:
+      context: "./src"
+      dockerfile: "IlpKitDockerfile"
+    command: >
+      /bin/bash -c "
+        while ! nc -z postgres 5432; do sleep 5; done;
+        npm start
+      "
+    networks:
+      kit:
+        aliases:
+          - "ilp-kit1"
+    ports:
+      - "3010:3010"
+    environment:
+      DB_URI: "postgres://admin:password@postgres/ilp-kit-1-db"
+      API_HOSTNAME: "ilp-kit1"
+      API_PORT: "3100"
+      API_PRIVATE_HOSTNAME: "localhost"
+      API_PUBLIC_HTTPS: "false"
+      API_PUBLIC_PATH: "/api"
+      API_PUBLIC_PORT: "3010"
+      API_SECRET: "password"
+      CLIENT_HOST: "ilp-kit1"
+      CLIENT_PORT: "3010"
+      CLIENT_PUBLIC_PORT: "3010"
+      CLIENT_TITLE: "ILP Kit 1"
+      LEDGER_ADMIN_NAME: "admin"
+      LEDGER_ADMIN_PASS: "password"
+      LEDGER_CURRENCY_CODE: "USD"
+      LEDGER_ILP_PREFIX: "test.dev.kit1."
+      LEDGER_RECOMMENDED_CONNECTORS: "connector"
+      CONNECTOR_ENABLE: "true"
+      CONNECTOR_LEDGERS: '{"test.dev.kit1.":{"currency":"USD","plugin":"ilp-plugin-bells","options":{"account":"http://ilp-kit1:3010/ledger/accounts/connector","username":"connector","password":"password"}}}'
+      API_REGISTRATION: "true"
+      LEDGER_AMOUNT_SCALE: "9"
+      LEDGER_AMOUNT_PRECISION: "19"
+      ILP_KIT_CLI_VERSION: "11.0.1"
+      DEBUG: "connector*,ilp*"
+
+  ilp-kit-2:
+    container_name: "ilp-kit-2"
+    build:
+      context: "./src"
+      dockerfile: "IlpKitDockerfile"
+    command: >
+      /bin/bash -c "
+        while ! nc -z postgres 5432; do sleep 5; done;
+        npm start
+      "
+    networks:
+      kit:
+        aliases:
+          - "ilp-kit2"
+    ports:
+      - "4010:4010"
+    environment:
+      DB_URI: "postgres://admin:password@postgres/ilp-kit-2-db"
+      API_HOSTNAME: "ilp-kit2"
+      API_PORT: "4100"
+      API_PRIVATE_HOSTNAME: "localhost"
+      API_PUBLIC_HTTPS: "false"
+      API_PUBLIC_PATH: "/api"
+      API_PUBLIC_PORT: "4010"
+      API_SECRET: "password"
+      CLIENT_HOST: "ilp-kit2"
+      CLIENT_PORT: "4010"
+      CLIENT_PUBLIC_PORT: "4010"
+      CLIENT_TITLE: "ILP Kit 2"
+      LEDGER_ADMIN_NAME: "admin"
+      LEDGER_ADMIN_PASS: "password"
+      LEDGER_CURRENCY_CODE: "USD"
+      LEDGER_ILP_PREFIX: "test.dev.kit2."
+      LEDGER_RECOMMENDED_CONNECTORS: "connector"
+      CONNECTOR_ENABLE: "true"
+      CONNECTOR_LEDGERS: '{"test.dev.kit2.":{"currency":"USD","plugin":"ilp-plugin-bells","options":{"account":"http://ilp-kit2:4010/ledger/accounts/connector","username":"connector","password":"password"}}}'
+      API_REGISTRATION: "true"
+      LEDGER_AMOUNT_SCALE: "9"
+      LEDGER_AMOUNT_PRECISION: "19"
+      ILP_KIT_CLI_VERSION: "11.0.1"
+      DEBUG: "connector*,ilp*"
