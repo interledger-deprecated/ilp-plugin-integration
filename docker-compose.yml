@@ -8,7 +8,7 @@ services:
     container_name: "postgres-db"
     build:
       context: "./src"
-      dockerfile: "PostgresDockerFile"
+      dockerfile: "PostgresDockerfile"
     environment:
       PGDATA: "/var/lib/postgresql/data"
       POSTGRES_USER: "admin"
