@@ -1,4 +1,4 @@
-# docker compose for an ILP Kit
+nodejs# docker compose for an ILP Kit
 version: "2.1"
 networks:
   kit:
@@ -55,7 +55,7 @@ services:
       LEDGER_ILP_PREFIX: "test.dev.kit1."
       LEDGER_RECOMMENDED_CONNECTORS: "connector"
       CONNECTOR_ENABLE: "true"
-      CONNECTOR_LEDGERS: '{"test.dev.kit1.":{"currency":"USD","plugin":"ilp-plugin-bells","options":{"account":"http://ilp-kit1:3010/ledger/accounts/connector","username":"connector","password":"password"}},"${ILP_PLUGIN_PREFIX}":{"currency":"USD","plugin":"${ILP_PLUGIN_MODULE}","store":${ILP_PLUGIN_STORE:-false},"options":${ILP_PLUGIN_CONFIG_1}}}'
+      CONNECTOR_LEDGERS: '{"test.dev.kit1.":{"currency":"USD","plugin":"ilp-plugin-bells","options":{"account":"http://ilp-kit1:3010/ledger/accounts/connector","username":"connector","password":"password"}},"${ILP_PLUGIN_PREFIX}":{"currency":"${ILP_PLUGIN_CURRENCY:-USD}","plugin":"${ILP_PLUGIN_MODULE}","store":${ILP_PLUGIN_STORE:-false},"options":${ILP_PLUGIN_CONFIG_1}}}'
       CONNECTOR_ROUTES: '[{"targetPrefix":"test.dev.kit2.","connectorLedger":"${ILP_PLUGIN_PREFIX}","connectorAccount":"${ILP_PLUGIN_ACCOUNT_2}"}]'
       API_REGISTRATION: "true"
       LEDGER_AMOUNT_SCALE: "9"
@@ -100,7 +100,7 @@ services:
       LEDGER_ILP_PREFIX: "test.dev.kit2."
       LEDGER_RECOMMENDED_CONNECTORS: "connector"
       CONNECTOR_ENABLE: "true"
-      CONNECTOR_LEDGERS: '{"test.dev.kit2.":{"currency":"USD","plugin":"ilp-plugin-bells","options":{"account":"http://ilp-kit2:4010/ledger/accounts/connector","username":"connector","password":"password"}},"${ILP_PLUGIN_PREFIX}":{"currency":"USD","plugin":"${ILP_PLUGIN_MODULE}","store":${ILP_PLUGIN_STORE:-false},"options":${ILP_PLUGIN_CONFIG_2}}}'
+      CONNECTOR_LEDGERS: '{"test.dev.kit2.":{"currency":"USD","plugin":"ilp-plugin-bells","options":{"account":"http://ilp-kit2:4010/ledger/accounts/connector","username":"connector","password":"password"}},"${ILP_PLUGIN_PREFIX}":{"currency":"${ILP_PLUGIN_CURRENCY:-USD}","plugin":"${ILP_PLUGIN_MODULE}","store":${ILP_PLUGIN_STORE:-false},"options":${ILP_PLUGIN_CONFIG_2}}}'
       CONNECTOR_ROUTES: '[{"targetPrefix":"test.dev.kit1.","connectorLedger":"${ILP_PLUGIN_PREFIX}","connectorAccount":"${ILP_PLUGIN_ACCOUNT_1}"}]'
       API_REGISTRATION: "true"
       LEDGER_AMOUNT_SCALE: "9"

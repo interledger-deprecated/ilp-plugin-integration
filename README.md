@@ -20,6 +20,7 @@ $ docker-compose build
 
 - `ILP_PLUGIN_CONFIG_1` - A JSON string specifying the constructor parameters to your first plugin, eg. `{"account":"https://red.ilpdemo.org/ledger/accounts/test","password":"test"}`.
 - `ILP_PLUGIN_ACCOUNT_1` - The full ILP address of your first plugin. It should match the value of `plugin.getAccount()`. This is required in order to automatically configure a connector.
+- `ILP_PLUGIN_CURRENCY` - (Optional) The currency code used to determine rates for your plugins, eg. `EUR` or `BTC`. Defaults to `USD`.
 
 - `ILP_PLUGIN_CONFIG_2` - As `ILP_PLUGIN_CONFIG_1`, but specifying a second plugin.
 - `ILP_PLUGIN_ACCOUNT_2` - As `ILP_PLUGIN_ACCOUNT_1`, but with the ILP address of your second plugin.
