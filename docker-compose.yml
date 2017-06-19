@@ -1,4 +1,4 @@
-nodejs# docker compose for an ILP Kit
+# docker compose for an ILP Kit
 version: "2.1"
 networks:
   kit:
