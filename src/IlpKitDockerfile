@@ -1,4 +1,4 @@
-FROM interledgerjs/ilp-kit:v2.0.0-36-ga10ea68
+FROM interledgerjs/ilp-kit:v3.0.0-alpha2
 
 WORKDIR /usr/src/app
 
@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y git netcat
 # fixes to allow the ILP kit to run over http
 RUN sed -i "s/('https:/('http:/" node_modules/ilp/src/lib/spsp.js
 RUN sed -i 's/tls_only: true/tls_only: false/' api/src/lib/utils.js
+RUN sed -i 's/\[ \[0, 0\], \[MAX_UINT, MAX_UINT\] \]/null/' node_modules/ilp-connector/src/lib/route-broadcaster.js
 
 # launch ILP kit
 CMD [ "npm", "start" ]

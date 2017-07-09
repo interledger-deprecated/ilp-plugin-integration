@@ -29,7 +29,7 @@ services:
         npm start
       "
     volumes:
-      - "./${ILP_PLUGIN_MODULE}:/usr/src/app/node_modules/${ILP_PLUGIN_MODULE}"
+      - "./ilp-plugin-payment-channel-framework:/usr/src/app/node_modules/ilp-plugin-payment-channel-framework"
     networks:
       kit:
         aliases:
@@ -55,8 +55,11 @@ services:
       LEDGER_ILP_PREFIX: "test.dev.kit1."
       LEDGER_RECOMMENDED_CONNECTORS: "connector"
       CONNECTOR_ENABLE: "true"
-      CONNECTOR_LEDGERS: '{"test.dev.kit1.":{"currency":"USD","plugin":"ilp-plugin-bells","options":{"account":"http://ilp-kit1:3010/ledger/accounts/connector","username":"connector","password":"password"}},"${ILP_PLUGIN_PREFIX}":{"currency":"${ILP_PLUGIN_CURRENCY:-USD}","plugin":"${ILP_PLUGIN_MODULE}","store":${ILP_PLUGIN_STORE:-false},"options":${ILP_PLUGIN_CONFIG_1}}}'
-      CONNECTOR_ROUTES: '[{"targetPrefix":"test.dev.kit2.","connectorLedger":"${ILP_PLUGIN_PREFIX}","connectorAccount":"${ILP_PLUGIN_ACCOUNT_2}"}]'
+      CONNECTOR_LEDGERS: '{"test.dev.kit1.":{"currency":"USD","options":{"account":"http://ilp-kit1:3010/ledger/accounts/connector","password":"password","username":"connector"},"plugin":"ilp-plugin-bells"},"test.west.":{"currency":"USD","options":{"maxBalance":"1000000000","prefix":"test.west.","token":"placeholder","rpcUri":"http://10.200.10.1:8080/rpc","info":{"currencyCode":"USD","currencyScale":9,"prefix":"test.west."}},"plugin":"ilp-plugin-payment-channel-framework","store":true}}'
+      CONNECTOR_ROUTES: '[{"targetPrefix":"test.dev.kit2.","connectorLedger":"test.west.","connectorAccount":"test.west.client"}]'
+      CONNECTOR_MAX_HOLD_TIME: '10000'
+      CONNECTOR_BACKEND: 'one-to-one'
+      CONNECTOR_FX_SPREAD: '0'
       API_REGISTRATION: "true"
       LEDGER_AMOUNT_SCALE: "9"
       LEDGER_AMOUNT_PRECISION: "19"
@@ -74,7 +77,7 @@ services:
         npm start
       "
     volumes:
-      - "./${ILP_PLUGIN_MODULE}:/usr/src/app/node_modules/${ILP_PLUGIN_MODULE}"
+      - "./ilp-plugin-payment-channel-framework:/usr/src/app/node_modules/ilp-plugin-payment-channel-framework"
     networks:
       kit:
         aliases:
@@ -100,8 +103,11 @@ services:
       LEDGER_ILP_PREFIX: "test.dev.kit2."
       LEDGER_RECOMMENDED_CONNECTORS: "connector"
       CONNECTOR_ENABLE: "true"
-      CONNECTOR_LEDGERS: '{"test.dev.kit2.":{"currency":"USD","plugin":"ilp-plugin-bells","options":{"account":"http://ilp-kit2:4010/ledger/accounts/connector","username":"connector","password":"password"}},"${ILP_PLUGIN_PREFIX}":{"currency":"${ILP_PLUGIN_CURRENCY:-USD}","plugin":"${ILP_PLUGIN_MODULE}","store":${ILP_PLUGIN_STORE:-false},"options":${ILP_PLUGIN_CONFIG_2}}}'
-      CONNECTOR_ROUTES: '[{"targetPrefix":"test.dev.kit1.","connectorLedger":"${ILP_PLUGIN_PREFIX}","connectorAccount":"${ILP_PLUGIN_ACCOUNT_1}"}]'
+      CONNECTOR_LEDGERS: '{"test.east.":{"currency":"USD","options":{"maxBalance":"1000000000","prefix":"test.east.","token":"placeholder","rpcUri":"http://10.200.10.1:8080/rpc","info":{"currencyCode":"USD","currencyScale":9,"prefix":"test.east."}},"plugin":"ilp-plugin-payment-channel-framework","store":true},"test.dev.kit2.":{"currency":"USD","options":{"account":"http://ilp-kit2:4010/ledger/accounts/connector","password":"password","username":"connector"},"plugin":"ilp-plugin-bells"}}'
+      CONNECTOR_ROUTES: '[{"targetPrefix":"test.dev.kit1.","connectorLedger":"test.east.","connectorAccount":"test.east.client"}]'
+      CONNECTOR_MAX_HOLD_TIME: '10000'
+      CONNECTOR_BACKEND: 'one-to-one'
+      CONNECTOR_FX_SPREAD: '0'
       API_REGISTRATION: "true"
       LEDGER_AMOUNT_SCALE: "9"
       LEDGER_AMOUNT_PRECISION: "19"
